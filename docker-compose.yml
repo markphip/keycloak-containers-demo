@@ -1,0 +1,49 @@
+version: '3'
+
+volumes:
+  jenkins_data:
+      driver: local
+
+services:
+  keycloak:
+    container_name: demo-keycloak
+    build:
+      context: .
+      dockerfile: keycloak/Dockerfile
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
+    volumes:
+      - ./mytheme:/opt/jboss/keycloak/themes/mytheme/
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    labels:
+      kompose.service.type: nodeport
+    ports:
+      - '80:8080'
+      - '443:8443'
+      - '50000:50000'
+    volumes:
+      - jenkins_data:/jenkins_config
+
+  ldap:
+    container_name: demo-ldap
+    build:
+      context: ldap
+      dockerfile: Dockerfile
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - '8025:8025'
+
+  js-console:
+    container_name: js-console
+    build:
+      context: js-console
+      dockerfile: Dockerfile
+    ports:
+      - '8000:80'

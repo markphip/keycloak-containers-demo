@@ -3,20 +3,39 @@ version: '3'
 volumes:
   jenkins_data:
       driver: local
+  postgres_data:
+      driver: local
 
 services:
+  postgres:
+      image: postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: password
+
   keycloak:
     container_name: demo-keycloak
     build:
       context: .
       dockerfile: keycloak/Dockerfile
     environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
     ports:
       - 8080:8080
     volumes:
       - ./mytheme:/opt/jboss/keycloak/themes/mytheme/
+    depends_on:
+      - postgres
 
   jenkins:
     image: jenkins/jenkins:lts
@@ -27,8 +46,7 @@ services:
       - '443:8443'
       - '50000:50000'
     volumes:
-      - jenkins_data:/jenkins_config
-
+      - jenkins_data:/var/jenkins_home
   ldap:
     container_name: demo-ldap
     build:

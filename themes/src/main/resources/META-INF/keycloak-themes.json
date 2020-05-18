@@ -1,5 +1,8 @@
 {
     "themes": [{
+        "name" : "digital.ai",
+        "types": [ "login" ]
+    }, {
         "name" : "sunrise",
         "types": [ "login" ]
     }]

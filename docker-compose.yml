@@ -7,6 +7,26 @@ volumes:
       driver: local
 
 services:
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./config.json:/app/config/production.json
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+  mariadb:
+    image: 'jc21/mariadb-aria:10.4'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
   postgres:
       image: postgres
       volumes:
@@ -30,8 +50,6 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-    ports:
-      - 8080:8080
     volumes:
       - ./mytheme:/opt/jboss/keycloak/themes/mytheme/
     depends_on:
@@ -41,10 +59,6 @@ services:
     image: jenkins/jenkins:lts
     labels:
       kompose.service.type: nodeport
-    ports:
-      - '80:8080'
-      - '443:8443'
-      - '50000:50000'
     volumes:
       - jenkins_data:/var/jenkins_home
   ldap:
@@ -55,13 +69,9 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    ports:
-      - '8025:8025'
 
   js-console:
     container_name: js-console
     build:
       context: js-console
       dockerfile: Dockerfile
-    ports:
-      - '8000:80'

@@ -60,7 +60,7 @@
                     <p>Please create an initial admin user to get started.</p>
                 <#else>
                     <p class="welcome-message">
-                        <img src="welcome-content/alert.png">You need local access to create the initial admin user. <br><br>Open <a href="http://localhost:8080/auth">http://localhost:8080/auth</a>
+                        <img src="welcome-content/alert.png">You need local access to create the initial admin user. <br><br>Open <a href="https://keycloak/auth">https://keycloak/auth</a>
                         <br>or use the add-user-keycloak script.
                     </p>
                 </#if>

@@ -1,5 +1,5 @@
 {
   "realm" : "dai",
-  "auth-server-url" : "https://keycloak/auth",
+  "auth-server-url" : "http://keycloak:8080/auth",
   "resource" : "js-console"
 }

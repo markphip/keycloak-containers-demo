@@ -1,0 +1,5 @@
+react-demo/node_modules
+react-demo/build
+.dockerignore
+Dockerfile
+Dockerfile.prod

@@ -3,6 +3,8 @@ version: '3'
 volumes:
   postgres_data:
       driver: local
+  jenkins_data:
+      driver: local
 
 services:
 
@@ -15,11 +17,32 @@ services:
         POSTGRES_USER: keycloak
         POSTGRES_PASSWORD: password
 
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./config.json:/app/config/production.json
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+  mariadb:
+    image: 'jc21/mariadb-aria:10.4'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+
   keycloak:
     container_name: demo-keycloak
     build:
-      context: .
-      dockerfile: keycloak/Dockerfile
+      context: keycloak
+      dockerfile: Dockerfile
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -38,16 +61,12 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    ports:
-      - '8025:8025'
 
   js-console:
     container_name: js-console
     build:
       context: js-console
       dockerfile: Dockerfile
-    ports:
-      - '8000:80'
 
   samlidp:
     container_name: saml
@@ -55,7 +74,7 @@ services:
       context: saml
       dockerfile: Dockerfile
     environment:
-      SIMPLESAMLPHP_SP_ENTITY_ID: http://keycloak:8080/auth/realms/dai
+      SIMPLESAMLPHP_SP_ENTITY_ID: https://keycloak/auth/realms/dai
       SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: http://keycloak:8080/auth/realms/dai/broker/saml/endpoint
       SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE: http://keycloak:8080/auth/realms/dai/broker/saml/endpoint
       SIMPLESAMLPHP_ADMIN_PASSWORD: admin
@@ -65,3 +84,10 @@ services:
       - "8443:8443"
     volumes:
       - ./saml/users.php:/var/www/simplesamlphp/config/authsources.php
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    labels:
+      kompose.service.type: nodeport
+    volumes:
+      - jenkins_data:/var/jenkins_home

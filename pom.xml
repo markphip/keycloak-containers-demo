@@ -41,9 +41,9 @@
     </properties>
 
     <modules>
-        <module>magic-link</module>
-        <module>themes</module>
-        <module>token-validation</module>
+        <module>keycloak/magic-link</module>
+        <module>keycloak/themes</module>
+        <module>keycloak/token-validation</module>
     </modules>
 
     <build>

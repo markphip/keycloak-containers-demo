@@ -85,6 +85,9 @@ services:
     build:
       context: flask-demo
       dockerfile: Dockerfile
+    environment:
+      OIDC_CLIENT_ID: flask-demo
+      OIDC_ISSUER: https://keycloak/auth/realms/dai
     ports:
       - '5000:5000'
     depends_on:

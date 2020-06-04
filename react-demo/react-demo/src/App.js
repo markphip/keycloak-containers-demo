@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 
 function App({ isAuthenticated, keycloak }) {
-  const serviceUrl = "http://flask-demo.local/api/v1";
+  const serviceUrl = "https://flask-demo/api/v1";
 
   let [isLoggedIn, setLoggedIn] = React.useState(isAuthenticated);
   keycloak.onAuthLogout = () => {

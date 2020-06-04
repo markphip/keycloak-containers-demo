@@ -5,5 +5,4 @@ COPY ./app/ /app
 #RUN pip install flask flask_pyoidc flask-cors
 #RUN pip install flask flask_oidc flask-cors
 RUN pip install flask flask-cors pyjwt[crypto] pycrypto
-ENV OIDC_CLIENT_ID flask-demo
 CMD ["python","main.py"]

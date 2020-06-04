@@ -1,6 +1,6 @@
 {
   "realm": "dai",
-  "auth-server-url": "http://keycloak.local/auth/",
+  "auth-server-url": "https://keycloak/auth/",
   "ssl-required": "external",
   "resource": "react-demo",
   "public-client": true,

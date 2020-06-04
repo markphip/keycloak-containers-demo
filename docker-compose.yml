@@ -75,3 +75,25 @@ services:
     build:
       context: js-console
       dockerfile: Dockerfile
+
+  react-demo:
+    container_name: react-demo
+    build:
+      context: react-demo
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - '3000:3000'
+    depends_on:
+      - keycloak
+
+  flask-demo:
+    container_name: flask-demo
+    build:
+      context: flask-demo
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    depends_on:
+      - keycloak

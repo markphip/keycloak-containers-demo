@@ -1,0 +1,34 @@
+name: Tagged
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Manual trigger'
+        required: true
+        default: 'Get tag'
+
+
+jobs:
+
+  my_job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    # Optionally: unshallow as a separate operation
+    # - name: Unshallow
+    #   run: git fetch --prune --unshallow
+    - name: Find Tag
+      id: tagger
+      uses: jimschubert/query-tag-action@v1
+      with:
+        include: '*nightly*'
+        commit-ish: 'HEAD'
+        # if you unshallow in a separate step, use the following option:
+        # skip-unshallow: 'true'
+    - name: Show Tag
+      id: display
+      run: |
+        echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'

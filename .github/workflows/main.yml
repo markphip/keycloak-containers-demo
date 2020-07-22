@@ -22,7 +22,7 @@ jobs:
     #   run: git fetch --prune --unshallow
     - name: Find Tag
       id: tagger
-      uses: jimschubert/query-tag-action@v1
+      uses: digital-ai/query-tag-action@v1
       with:
         include: '*nightly*'
         commit-ish: 'HEAD'

@@ -31,6 +31,6 @@ jobs:
         # skip-unshallow: 'true'
     - name: Show Tag
       id: display
-      if: contains(${{steps.tagger.outputs.tag}}, 'NO_TAGS')
+      if: contains(${{steps.tagger.outputs.tag}}, 'nightly')
       run: |
         echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'

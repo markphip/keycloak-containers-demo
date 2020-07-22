@@ -34,3 +34,9 @@ jobs:
       id: display
       run: |
         echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
+
+    - name: No Tag
+      if: contains(steps.tagger.outputs.tag, 'NO_TAGS')
+      id: message
+      run: |
+        echo 'HEAD is not tagged'

@@ -30,7 +30,7 @@ jobs:
         # if you unshallow in a separate step, use the following option:
         # skip-unshallow: 'true'
     - name: Show Tag
-      id: display
       if: contains(${{steps.tagger.outputs.tag}}, 'nightly')
+      id: display
       run: |
         echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'

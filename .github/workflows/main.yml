@@ -22,10 +22,11 @@ jobs:
     #   run: git fetch --prune --unshallow
     - name: Find Tag
       id: tagger
-      uses: digital-ai/query-tag-action@v2-rc
+      uses: digital-ai/query-tag-action@v2-rc1
       with:
         include: '*nightly*'
         commit-ish: 'HEAD'
+        exact-match: 'true' 
         # if you unshallow in a separate step, use the following option:
         # skip-unshallow: 'true'
     - name: Show Tag

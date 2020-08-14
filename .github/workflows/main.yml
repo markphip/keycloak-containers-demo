@@ -45,7 +45,7 @@ jobs:
       uses: garygrossgarten/github-action-ssh@v0.5.0
       with:
         # Command to execute on the remote server.
-        command: whoami
+        command: /data/lisbon/nightly.sh
         host: ${{ secrets.EC2_HOSTNAME }}
         username: ${{ secrets.EC2_USER }}
         privateKey: ${{ secrets.EC2_KEY }}
